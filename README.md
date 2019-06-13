@@ -1,8 +1,8 @@
-# INVOICE-PARSER
+## INVOICE-PARSER
 A project to extract information from invoices and purchase orders
 
------------------ INSTRUCTIONS FOR CREATING TEMPLATES
--------------------------
+# INSTRUCTIONS FOR CREATING TEMPLATES
+
 
 RECOMMENDED PROCEDURE [ WHEN THE USER ONLY HAS THE INVOICE AND NOT THE
 TEMPLATE]
@@ -88,11 +88,23 @@ EXAMPLE:
 The following output was received when creating a template for ISS
 Machinery...
 
-[ 1 ] ....... Sa OO secs [ 2 ] ....... Cee [ 3 ] ....... [ 4 ] .......
-INVOICE DATE : April 20, 2019 [ 5 ] ....... DELIVERY DATE : April 10,
-2019 [ 6 ] ....... INVOICE NO \>: — INV1904-02171 [ 7 ] ....... SALES NO
-\> APSC1904-00059 [ 8 ] ....... [ 9 ] ....... GRAND TOTAL AMOUNT JPY188,
-360, 00
+[ 1 ] ....... Sa OO secs
+
+[ 2 ] ....... Cee 
+
+[ 3 ] ....... 
+
+[ 4 ] .......INVOICE DATE : April 20, 2019 
+
+[ 5 ] ....... DELIVERY DATE : April 10, 2019 
+
+[ 6 ] ....... INVOICE NO \>: — INV1904-02171 
+
+[ 7 ] ....... SALES NO \> APSC1904-00059
+
+[ 8 ] .......
+
+[ 9 ] ....... GRAND TOTAL AMOUNT JPY188, 360, 00
 
 ON THE LEFT IN SQUARE BRACKETS IS THE ROW NUMBER.
 
@@ -104,11 +116,11 @@ SINCE IN THE ORIGINAL INVOICE IT IS PRESENT IN THE RIGHTMOST SIDE WE USE
 NEGATIVE NUMBERS SEPARATE EACH CHARACTER/WORD BY SPACES AND NUMBER THEM
 LIKE BELOW
 
-                 -5     -4      -3      -2          -1                                
+                                              
 
-[ 6 ] ....... INVOICE NO \>: — INV1904-02171
+[ 6 ] ....... INVOICE   NO  \>:    —      INV1904-02171
 
-(EXTRA SPACES WERE USED FOR CONVENIENCE)
+
 
 THEREFORE UNDER THE INVOICE NUMBER COLUMN IN THE EXCEL SHEET THE
 FOLLOWING SHALL BE ENTERED: 6,-1
@@ -119,7 +131,7 @@ CONSIDER THE INVOICE DATE:
 
 USING NEGATIVE NUMBERING:
 
-                 -6      -5    -4        -3     -2      -1
+                
 
 [ 4 ] ....... INVOICE DATE : April 20, 2019
 
@@ -133,7 +145,7 @@ AMOUNT
 
 POSITIVE NUMBERING: [BECAUSE THERE ARE SPACES INBETWEEN THE AMOUNT]
 
-                1         2             3         4           5         6                
+                            
 
 [ 9 ] ....... GRAND TOTAL AMOUNT JPY188, 360, 00
 
@@ -172,7 +184,7 @@ LEFTSIDE
 
 USING POSITIVE NUMBERING:
 
-                1         2               3
+                
 
 [ 12 ] .......TOTAL AMOUNT: 17,233
 
@@ -212,15 +224,19 @@ EDITED IMAGE READY]
 INSTRUCTIONS TO USE THIS PROGRAM IN ANOTHER PC ( WINDOWS VERSION \>= 7):
 [NOT RECOMMENDED TO CREATE TEMPLATES IN MULTIPLE COMPUTERS BECAUSE
 TEMPLATES ARE STORED LOCALLY AND UPDATES IN THE TEMPLATES WILL NOT BE
-SEEN ON OTHER COMPUTERS] - INSTALL PYTHON - USE pip TO INSTALL ALL
-PACKAGES REQUIRED IN THE PROGRAM - Ghostscript - 'pip install
-ghostscript' and https://www.ghostscript.com/download/gsdnld.html -
-Imagemagick - https://imagemagick.org/script/download.php -
-Tesseract-OCR - https://github.com/UB-Mannheim/tesseract/wiki - INSTALL
-PYTHONMAGICK FROM WHEELS USING pip - INSTALL SCIPY - COPY THE COMPLETE
-'2.0' DIRECTORY IN NEW PC - THE PROGRAM IS READY TO BE USED
+SEEN ON OTHER COMPUTERS]
+- INSTALL PYTHON - USE pip TO INSTALL ALL
+PACKAGES REQUIRED IN THE PROGRAM 
+- Ghostscript - 'pip install
+ghostscript' and https://www.ghostscript.com/download/gsdnld.html
+- Imagemagick - https://imagemagick.org/script/download.php 
+- Tesseract-OCR - https://github.com/UB-Mannheim/tesseract/wiki 
+- INSTALL PYTHONMAGICK FROM WHEELS USING pip 
+- INSTALL SCIPY 
+- COPY THE COMPLETE '2.0' DIRECTORY IN NEW PC - THE PROGRAM IS READY TO BE USED
 
-OTHER INSTRUCTIONS: - IF A VENDOR PERMANENTLY CHANGES THEIR TEMPLATE
+OTHER INSTRUCTIONS: 
+- IF A VENDOR PERMANENTLY CHANGES THEIR TEMPLATE
 FOLLOW THE SAME PROCEDURE AND REPLACE THE VALUES IN THE ROW ASSIGNED TO
 THE SAME VENDOR IN THE EXCEL SHEET PREVIOUSLY
 
@@ -231,7 +247,7 @@ THE SAME VENDOR IN THE EXCEL SHEET PREVIOUSLY
     IDLE'. WHEN THE SCRIPT IS OPENED PRESS 'F5' TO RUN. THE ERROR WILL
     BE DISPLAYED AND THE PROGRAM CAN BE DEBUGGED ACCORDINGLY
 
--   \*\*\*\* DO NOT MODIFY/DELETE/MOVE THE FILES AND FOLDERS IN ANY
+   \*\*\*\* DO NOT MODIFY/DELETE/MOVE THE FILES AND FOLDERS IN ANY
     SUBDIRECTORY OF '2.0'\*\*\*\*
 
 THIS PROJECT IS DISTRIBUTED UNDER THE MIT LICENSE FOR USE IN THE
