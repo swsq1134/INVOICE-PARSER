@@ -27,9 +27,10 @@ import openpyxl
 #               Tesseract-OCR - https://github.com/UB-Mannheim/tesseract/wiki
 
 
-#ENTER URL IN QUOTATIONS BELOW
+
 def get_url():
-    URL = 'http://ptsv2.com/t/2gvd4-1560403643/post'
+    #ENTER URL IN QUOTATIONS BELOW
+    URL = 'https://ptsv2.com/t/z4f72-1561445479/post'
     return URL
 
 def check_connection():
@@ -103,6 +104,23 @@ def img_rot(x, name):
         else:
             rot_img_path = 'CREATE TEMPLATE/rimg/' + img_name
             shutil.copy(img_path,rot_img_path)
+
+
+def remove_underlines(path):
+    img = cv2.imread(path, 0)
+    img = cv2.bitwise_not(img)  
+
+    kernel_clean = numpy.ones((2,2),numpy.uint8)
+    cleaned = cv2.erode(img, kernel_clean, iterations=1)
+
+    kernel_line = numpy.ones((1, 5), numpy.uint8)  
+    clean_lines = cv2.erode(cleaned, kernel_line, iterations=6)
+    clean_lines = cv2.dilate(clean_lines, kernel_line, iterations=6)
+
+    cleaned_img_without_lines = cleaned - clean_lines
+    cleaned_img_without_lines = cv2.bitwise_not(cleaned_img_without_lines)
+
+    cv2.imwrite(path, cleaned_img_without_lines)
 
 
 def check_duplicate(listx, directory):
@@ -231,26 +249,6 @@ def inv_decode(rot_img_name,vname,ocr_full_img):
     path_of_template = 'CREATE TEMPLATE\Template storage\\' + vname + ' ts.jpg'
     with open(path_of_image, "rb") as im:
         with open(path_of_template, "rb") as tm:
-            inv = cv2.imread(path_of_image)
-            template = cv2.imread(path_of_template)
-            ht = inv.shape[0]
-            wt = inv.shape[1]
-            d = (wt,ht)
-            template_resize = cv2.resize(template, d, interpolation = cv2.INTER_AREA)
-            out = cv2.add(template_resize,inv)
-            cv2.imwrite('CREATE TEMPLATE\cache 2\\output.jpg', out)
-            fimg = 'CREATE TEMPLATE\cache 2\\output.jpg'
-            ocr_inv = ocr(fimg)
-            un_list = ["'",'"', ':', ',', ';', '?', '/','<','.','>','|','[',']','{','}','(',')','*','^','!','&','%','$','#','@']
-            ocr_lines = ocr_inv.split('\n')
-            for i in range(len(ocr_lines)):
-                line = ocr_lines[i].strip()
-                if(len(line)>0):
-                    if(line[0] in un_list):
-                        line = line.replace(line[0],"",1).strip()
-                ocr_lines[i] = line
-            ocr_inv = '\n'.join(ocr_lines)
-            #print(ocr_inv)
             wb = openpyxl.load_workbook('CREATE TEMPLATE\Templates.xlsx')
             sheet = wb.get_sheet_by_name('sheet1')
             name_list = []
@@ -262,6 +260,37 @@ def inv_decode(rot_img_name,vname,ocr_full_img):
             name = matching(name_list, ocr_full_img)
             name_index = int(name_list.index(name)+6)
             x=int(name_index)
+            inv = cv2.imread(path_of_image)
+            template = cv2.imread(path_of_template)
+            ht = inv.shape[0]
+            wt = inv.shape[1]
+            d = (wt,ht)
+            template_resize = cv2.resize(template, d, interpolation = cv2.INTER_AREA)
+            out = cv2.add(template_resize,inv)
+            out = cv2.blur(out,(4,4))
+            cv2.imwrite('CREATE TEMPLATE\cache 2\\output.jpg', out)
+            fimg = 'CREATE TEMPLATE\cache 2\\output.jpg'
+            if(sheet.cell(row = x, column = 15).value == 1):
+                remove_underlines(fimg)
+            ocr_inv = ocr(fimg)
+            un_list = ["'",'"', ':', ',', ';', '?', '/','<','.','>','|','[',']','{','}','(',')','*','^','!','&','%','$','#','@']
+            ocr_lines = ocr_inv.split('\n')
+            for i in range(len(ocr_lines)):
+                line = ocr_lines[i].strip()
+                if(len(line) == 1):
+                    if(line[0] in un_list):
+                        line = line.replace(line[0],"",1).strip()
+                if(len(line)>1):
+                    if(line[0] in un_list):
+                        line = line.replace(line[0],"",1).strip()
+                    if(line[-1] in un_list):
+                        line = line[:-1].strip()
+                ocr_lines[i] = line
+            ocr_lines = [line for line in ocr_lines if line.strip() != ''] 
+            ocr_inv = '\n'.join(ocr_lines)
+            #print(ocr_inv)
+            
+            
             if(sheet.cell(row = name_index, column = 1).value == (name_index-6)):
                 code = x-6
                 v_name = sheet.cell(row = x, column = 2).value
@@ -426,6 +455,7 @@ if __name__ == "__main__":
         FILE_OCR = 'CREATE TEMPLATE/rimg/' + F_OCR
         output_of_ocr = ocr(FILE_OCR)
         ocr_out.append(output_of_ocr)
+        #print(ocr_out[i])
 
     v_name_list = names()
     for i in range(len(v_name_list)):
@@ -536,8 +566,7 @@ if __name__ == "__main__":
                     po_invparty.append(data[-1])
                 if(('sci office/vessel' in item.lower()) == True):
                     if('country' not in item.lower()):
-                        data=item[item.index(':')+2:]
-                        
+                        data=item[item.index(':')+2:]                        
                     else:
                         data = item[item.index(':')+2:item.lower().index('country')-1]
                     po_off_vess.append(data)
